@@ -1,0 +1,66 @@
+sqlite3
+
+TO CREATE TABLE FOR EMP TABLE:
+CREATE TABLE emp(
+  "FirstName" VARCHAR(20),
+  "LastName" VARCHAR(20),
+  "ID" INTEGER  NOT NULL PRIMARY KEY,
+  "HireDate" DATE,
+  "TerminationDate" DATE,
+  "Salary" UNSIGNED BIG INT
+);
+
+TO CREATE TABLE FOR ANNUALREVIEW TABLE:
+CREATE TABLE annualreview(
+"ID" INTEGER NOT NULL PRIMARY KEY,
+"EmpID" INTEGER,
+"ReviewDate" DATE,
+FOREIGN KEY(EmpID) REFERENCES emp(ID)
+);
+
+TO LOAD DATA INSIDE SQLite DATABASE FROM CSV FILE(emp.csv):
+.mode csv
+.import emp.csv emp
+
+TO LOAD DATA INSIDE SQLite DATABASE FROM CSV FILE(annualreview.csv):
+.mode csv
+.import annualreview.csv annualreview
+
+************************************************************************************************************************************************************************************************************************************************************************************************************************************************************
+ANSWERS:
+1) Write a query to return all employees still working for the company with last names starting with "Smith" sorted by last name then first name.
+
+select * from emp where TerminationDate=='NULL' and LastName LIKE 'Smith%' ORDER BY LastName,FirstName;
+
+2) Given the `Employee` and `AnnualReviews` tables, write a query to return all employees who have never had a review sorted by HireDate.	
+
+select * from emp left join annualreview on emp.id=annualreview.EmpID where annualreview.EmpID IS NULL ORDER BY HireDate;
+
+3) Write a query to calculate the difference (in days) between the most and least tenured employee still working for the company										
+
+select julianday(HireDate)-(select julianday(HireDate) from emp where TerminationDate=='NULL' ORDER BY HireDate limit 1)AS ju from emp where TerminationDate=='NULL' ORDER BY HireDate DESC limit 1;
+
+4) Given the employee table above, write a query to calculate the longest period (in days) that the company has gone without a hiring or firing anyone								
+
+select MAX(dr) from (
+  select julianday(a)-julianday(LAG (a,1) over (order by a)) dr from (
+    select HireDate a from emp union select TerminationDate from emp where TerminationDate!='NULL'
+    )
+  );
+ 
+5) Write a query that returns each employee and for each row/employee include the greatest number of employees that worked for the company at any time during their tenure and the first date that maximum was reached. Extra points for not using cursors											
+
+SELECT * from emp x
+cross apply (
+SELECT * from (
+  SELECT d StartDate, Next EndD , SUM(op) OVER (ORDER BY d) num_empl from (
+    SELECT DISTINCT d, LEAD(d,1) over (order by d) Next, op from (
+      select HireDate d, 1 op from emp UNION ALL select TerminationDate, -1 from emp where TerminationDate=='NULL'
+      ) r
+    ) cr
+  ) a
+WHERE a.EndD BETWEEN x.HireDate AND x.TerminationDate and x.TerminationDate=='NULL'
+      ORDER BY num_empl DESC 
+limit 1);
+********************************************************************************************************************************************************************************************************************************************************************************************************************************************
+
