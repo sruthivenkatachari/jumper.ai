@@ -2,17 +2,17 @@
 Assignment-2
 
 (USE CASE FOLDER):
-chatlogs_excel.xlsx  - It contains chatlogs of the User with Bot (unclaened version)
-requirements.txt  - pre-requisite requirements are provided to execute the usecase.py code.
+chatlogs_excel.xlsx  - It contains chatlogs of the User with Bot (unclaened version),
+requirements.txt  - pre-requisite requirements are provided to execute the usecase.py code,
 usecase.py  - Python file which conatins answers for the questions( Use case part1 and Use case part 2).
 
 (WORD CLOUD FOLDER):
-wordcloud.py - Python code to build wordcloud from the message provided in the chatlogs after cleaning with wrangler.py
-stopwords.py - Python file which is imported in wordcloud.py.
+wordcloud.py - Python code to build wordcloud from the message provided in the chatlogs after cleaning with wrangler.py,
+stopwords.py - Python file which is imported in wordcloud.py,
 wordcloud_filtered.png - Output image obtained after executing wordcloud.py
 
 (WRANGLER FOLDER):
-wranger.py - Python code which cleans the message in the chatlogs_excel excelsheet for further processing of data.
+wranger.py - Python code which cleans the message in the chatlogs_excel excelsheet for further processing of data,
 wrangler-output - output file which we receive after executing wranger.py file.
 
 
