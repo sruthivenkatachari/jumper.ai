@@ -36,11 +36,15 @@ Use Case Part 2
 · Let's use the following definition for a Session:													
 When a customer stops chatting for more than 30 mins (1800 seconds), all prior interactions will be grouped as a Session.													
 													
-													
 Part 2 Objective													
 Answer to following questions with the data:													
 - How many sessions are there?													
 *********************************************************************************************************************************************************************************
+INSTRUCTION - TO RUN usecase.py
+1. set environment variable according to the operating system.
+2.To install the packages to run usecase.py
+   pip install -r requirements.txt
+
 
 
 
